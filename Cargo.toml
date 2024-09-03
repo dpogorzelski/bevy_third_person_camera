@@ -13,8 +13,12 @@ exclude = ["assets/*", "migrationGuides/*"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+avian3d = ["dep:avian3d"]
+
 [dependencies]
-bevy = { version = "0.14.0", default-features = false }
+bevy = { version = "0.14.1", default-features = false }
+avian3d = { version = "0.1.2", default-features = false, optional = true }
 
 [dev-dependencies]
-bevy = "0.14.0"
+bevy = "0.14.1"

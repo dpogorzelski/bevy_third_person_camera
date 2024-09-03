@@ -1,6 +1,9 @@
 mod gamepad;
 mod mouse;
 
+#[cfg(feature = "avian3d")]
+use avian3d::prelude::PhysicsSet;
+
 use bevy::{
     prelude::*,
     window::{CursorGrabMode, PrimaryWindow},
@@ -25,10 +28,18 @@ impl Plugin for ThirdPersonCameraPlugin {
             Update,
             (
                 aim.run_if(aim_condition),
+                #[cfg(not(feature = "avian3d"))]
                 sync_player_camera.after(orbit_mouse).after(orbit_gamepad),
                 toggle_x_offset.run_if(toggle_x_offset_condition),
                 toggle_cursor.run_if(toggle_cursor_condition),
             ),
+        );
+        #[cfg(feature = "avian3d")]
+        app.add_systems(
+            PostUpdate,
+            sync_player_camera
+                .after(PhysicsSet::Sync)
+                .before(TransformSystem::TransformPropagate),
         );
     }
 }
